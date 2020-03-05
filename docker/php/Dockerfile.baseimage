@@ -1,0 +1,34 @@
+FROM composer:1.8
+FROM php:7.4-fpm-alpine
+
+ENV APCU_VERSION 5.1.17
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+RUN apk upgrade -q -U -a \
+    && apk add --no-cache --virtual .persistent-deps \
+		git \
+		icu-libs \
+		gettext \
+        openssh \
+    && apk add bash
+
+RUN set -xe
+
+RUN  apk add --no-cache --virtual .build-deps \
+		$PHPIZE_DEPS \
+		icu-dev \
+		freetype-dev \
+    # PHP extensions
+	&& docker-php-ext-install \
+		intl \
+
+    # APC and enabling PHP extensions
+	&& pecl install apcu-${APCU_VERSION} \
+	&& docker-php-ext-enable --ini-name 20-apcu.ini apcu \
+	&& docker-php-ext-enable --ini-name 05-opcache.ini opcache
+
+COPY ./docker/php/conf/ext/opcache.ini /usr/local/etc/php/conf.d/05-opcache.ini
+
+COPY --from=0 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/app

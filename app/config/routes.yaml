@@ -1,0 +1,4 @@
+shout::request:
+    path: /shout/{author}
+    methods: [GET]
+    controller: App\Controller\ShoutController::shout

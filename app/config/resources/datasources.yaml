@@ -1,0 +1,4 @@
+quotes:
+    providers:
+        - quotesJson: https://raw.githubusercontent.com/iPresence/backend_test/master/quotes.json
+        - quotesRest: https://quotes.rest/
