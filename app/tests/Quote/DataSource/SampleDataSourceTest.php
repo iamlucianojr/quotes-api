@@ -7,6 +7,8 @@ namespace App\Tests\Quote\DataSource;
 use App\Quote\DataSource\Exception\DataSourceIsNotReadableException;
 use App\Quote\DataSource\SampleDataSource;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,8 @@ final class SampleDataSourceTest extends TestCase
         $this->expectException(DataSourceIsNotReadableException::class);
         new SampleDataSource(
             $this->httpClientMock,
+            new NullAdapter(),
+            new NullLogger(),
             $url
         );
     }
@@ -38,6 +42,8 @@ final class SampleDataSourceTest extends TestCase
 
         $dataSource = new SampleDataSource(
             $clientMock,
+            new NullAdapter(),
+            new NullLogger(),
             $url
         );
 

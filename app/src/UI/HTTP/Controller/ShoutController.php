@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\HTTP\Controller;
 
+use App\UI\HTTP\Dto\ShoutRequestDto;
 use App\UI\HTTP\FormType\FormErrorHandlerInterface;
 use App\UI\HTTP\FormType\FormErrorHandlerTrait;
 use App\UI\HTTP\FormType\ShoutRequestTypeForm;
@@ -13,6 +14,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 final class ShoutController extends AbstractController implements FormErrorHandlerInterface
 {
@@ -38,16 +40,8 @@ final class ShoutController extends AbstractController implements FormErrorHandl
 
         if ($form->isSubmitted() && $form->isValid()) {
             $should = $form->getData();
+            Assert::isInstanceOf($should, ShoutRequestDto::class);
 
-//            $cacheKey = $should->getAuthor();
-//
-//            $cachedItem = $this->cache->getItem($cacheKey);
-//
-//            if (false === $cachedItem->isHit()) {
-//                $quotes = $this->quoteService->getQuotesFormatted($should->getAuthor(), $should->getLimit());
-//                $cachedItem->set($quotes);
-//                $this->cache->save($cachedItem);
-//            }
             $quotes = $this->quoteService->getQuotesFormatted($should->getAuthor(), $should->getLimit());
 
             return new JsonResponse(array_column($quotes, 'quote'), Response::HTTP_OK);

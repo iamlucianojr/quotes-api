@@ -8,8 +8,8 @@ use App\Quote\Collection\QuoteCollection;
 use App\Quote\Collection\QuoteCollectionInterface;
 use App\Quote\DataSource\Exception\DataSourceException;
 use App\Quote\DataSource\Exception\DataSourceIsNotReadableException;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,36 +18,43 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Webmozart\Assert\Assert;
 
-final class SampleDataSource implements DataSourceInterface, LoggerAwareInterface
+final class SampleDataSource implements DataSourceInterface
 {
-    use LoggerAwareTrait;
+    private const KEY = 'SampleDataSource';
 
     private HttpClientInterface $httpClient;
 
     private QuoteCollectionInterface $quotes;
 
+    private AdapterInterface $cache;
+
+    private LoggerInterface $logger;
+
+    private string $url;
+
     public function __construct(
         HttpClientInterface $httpClient,
+        AdapterInterface $cache,
+        LoggerInterface $logger,
         string $dataSourceUrl
     ) {
         $this->httpClient = $httpClient;
+        $this->cache = $cache;
+        $this->url = $dataSourceUrl;
+        $this->logger = $logger;
 
-        try {
-            $rawDataResponse = $this->httpClient->request(Request::METHOD_GET, $dataSourceUrl);
-        } catch (TransportExceptionInterface | ClientException $e) {
-            throw new DataSourceException(
-                sprintf('Could not fetch quotes from %s data source', __CLASS__)
-            );
+        $cachedItem = $this->cache->getItem(self::KEY);
+
+        if ($cachedItem->get() instanceof QuoteCollectionInterface) {
+            $this->quotes = $cachedItem->get();
+            $this->logger->info('Data fetched from cache', ['DataSource' => self::KEY]);
         }
 
-        if ($rawDataResponse->getStatusCode() === Response::HTTP_NOT_FOUND) {
-            throw new DataSourceIsNotReadableException(
-                sprintf('The url %s provided is not readable or reachable', $dataSourceUrl)
-            );
+        if (false === $cachedItem->isHit()) {
+            $this->fetchQuotesFromSource();
+            $cachedItem->set($this->quotes);
+            $this->cache->save($cachedItem);
         }
-
-//        $this->logger->info('raw data fetched from text collection quotes api');
-        $this->quotes = QuoteCollection::fromArray($this->transformResponseInQuotesCollection($rawDataResponse));
     }
 
     public function getQuotes(): QuoteCollectionInterface
@@ -70,5 +77,26 @@ final class SampleDataSource implements DataSourceInterface, LoggerAwareInterfac
         Assert::keyExists($data, 'quotes');
 
         return $data['quotes'];
+    }
+
+    private function fetchQuotesFromSource(): void
+    {
+        try {
+            $rawDataResponse = $this->httpClient->request(Request::METHOD_GET, $this->url);
+        } catch (TransportExceptionInterface | ClientException $e) {
+            throw new DataSourceException(
+                sprintf('Could not fetch quotes from %s data source', __CLASS__)
+            );
+        }
+
+        if ($rawDataResponse->getStatusCode() === Response::HTTP_NOT_FOUND) {
+            throw new DataSourceIsNotReadableException(
+                sprintf('The url %s provided is not readable or reachable', $this->url)
+            );
+        }
+
+        $this->logger->info('Raw data fetched from text collection quotes api', ['DataSource' => self::KEY]);
+
+        $this->quotes = QuoteCollection::fromArray($this->transformResponseInQuotesCollection($rawDataResponse));
     }
 }

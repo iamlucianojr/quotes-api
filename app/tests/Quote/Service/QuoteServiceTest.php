@@ -39,8 +39,17 @@ final class QuoteServiceTest extends TestCase
         );
     }
 
-    public function testGetQuotesGivenAuthorSlug(): void
+    public function testGetQuotesGivenAuthorSlugShouldReturn2Quotes(): void
     {
-        $this->assertIsArray($this->service->getQuotes('steve-jobs'));
+        $quotes = $this->service->getQuotes('steve-jobs');
+        $this->assertIsArray($quotes);
+        $this->assertCount(2, $quotes);
+    }
+
+    public function testGetQuotesGivenAuthorSlugAndLimit1ShouldReturn1Quote(): void
+    {
+        $quotes = $this->service->getQuotes('steve-jobs', 1);
+        $this->assertIsArray($quotes);
+        $this->assertCount(1, $quotes);
     }
 }

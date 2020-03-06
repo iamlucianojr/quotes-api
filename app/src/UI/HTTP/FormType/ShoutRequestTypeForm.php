@@ -27,7 +27,7 @@ final class ShoutRequestTypeForm extends AbstractType
                 ],
             ])
             ->add('limit', IntegerType::class, [
-                'empty_data' => '1',
+                'empty_data' => '10',
                 'constraints' => [
                     new GreaterThan(0),
                     new LessThanOrEqual(10),

@@ -18,7 +18,7 @@ final class QuoteService implements QuoteServiceInterface
         $this->repository = $repository;
     }
 
-    public function getQuotes(string $author, int $limit = 1): array
+    public function getQuotes(string $author, int $limit = 10): array
     {
         $quotes = $this->repository->findByCriteria([
             'author' => trim($author),

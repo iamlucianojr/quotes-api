@@ -33,6 +33,10 @@ final class QuoteRepository implements QuoteRepositoryInterface
             }
         }
 
+        if (isset($criteria['limit'])) {
+            return array_slice($quotes, 0, $criteria['limit']);
+        }
+
         return $quotes;
     }
 
