@@ -27,4 +27,4 @@ services:
         image: redis
         hostname: redis
         volumes:
-            - ./var/data/redis
+            - /var/data/redis
