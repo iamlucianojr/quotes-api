@@ -41,7 +41,7 @@ final class Quote implements QuoteInterface
     {
         return [
             'author' => $this->author,
-            'quote' => $this->quote
+            'quote' => $this->quote,
         ];
     }
 }

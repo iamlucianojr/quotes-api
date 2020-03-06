@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\UI\HTTP\Controller;
 
+use App\Quote\Service\QuoteServiceInterface;
 use App\UI\HTTP\Dto\ShoutRequestDto;
 use App\UI\HTTP\FormType\FormErrorHandlerInterface;
 use App\UI\HTTP\FormType\FormErrorHandlerTrait;
 use App\UI\HTTP\FormType\ShoutRequestTypeForm;
-use App\Quote\Service\QuoteServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,7 +52,7 @@ final class ShoutController extends AbstractController implements FormErrorHandl
         $data = [
             'type' => 'validation_error',
             'title' => 'There was a validation error',
-            'errors' => $errors
+            'errors' => $errors,
         ];
 
         return new JsonResponse($data, Response::HTTP_BAD_REQUEST);

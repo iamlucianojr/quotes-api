@@ -7,5 +7,6 @@ namespace App\Quote\Repository;
 interface QuoteRepositoryInterface
 {
     public function fetchAll(): array;
+
     public function findByCriteria(array $criteria): ?array;
 }

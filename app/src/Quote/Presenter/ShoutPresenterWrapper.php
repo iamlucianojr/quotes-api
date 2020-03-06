@@ -35,7 +35,7 @@ final class ShoutPresenterWrapper implements ShoutPresenterWrapperInterface
     {
         return [
             'author' => $this->getAuthor(),
-            'quote' => $this->getQuote()
+            'quote' => $this->getQuote(),
         ];
     }
 }

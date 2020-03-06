@@ -22,7 +22,7 @@ final class QuoteService implements QuoteServiceInterface
     {
         $quotes = $this->repository->findByCriteria([
             'author' => trim($author),
-            'limit' => $limit
+            'limit' => $limit,
         ]);
 
         if (empty($quotes)) {

@@ -17,12 +17,12 @@ final class DummyDataSource implements DataSourceInterface
             $data = [
                 [
                     'author' => 'Dreamer',
-                    'quote' => 'Everything is possible'
+                    'quote' => 'Everything is possible',
                 ],
                 [
                     'author' => 'AI',
-                    'quote' => 'ETL: Extract, Transform and Load'
-                ]
+                    'quote' => 'ETL: Extract, Transform and Load',
+                ],
             ];
         }
 

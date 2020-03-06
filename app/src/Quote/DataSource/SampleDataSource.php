@@ -64,7 +64,7 @@ final class SampleDataSource implements DataSourceInterface
 
     private function transformResponseInQuotesCollection(ResponseInterface $rawDataResponse): array
     {
-        if ($rawDataResponse->getStatusCode() !== Response::HTTP_OK) {
+        if (Response::HTTP_OK !== $rawDataResponse->getStatusCode()) {
             return [];
         }
 
@@ -84,15 +84,11 @@ final class SampleDataSource implements DataSourceInterface
         try {
             $rawDataResponse = $this->httpClient->request(Request::METHOD_GET, $this->url);
         } catch (TransportExceptionInterface | ClientException $e) {
-            throw new DataSourceException(
-                sprintf('Could not fetch quotes from %s data source', __CLASS__)
-            );
+            throw new DataSourceException(sprintf('Could not fetch quotes from %s data source', __CLASS__));
         }
 
-        if ($rawDataResponse->getStatusCode() === Response::HTTP_NOT_FOUND) {
-            throw new DataSourceIsNotReadableException(
-                sprintf('The url %s provided is not readable or reachable', $this->url)
-            );
+        if (Response::HTTP_NOT_FOUND === $rawDataResponse->getStatusCode()) {
+            throw new DataSourceIsNotReadableException(sprintf('The url %s provided is not readable or reachable', $this->url));
         }
 
         $this->logger->info('Raw data fetched from text collection quotes api', ['DataSource' => self::KEY]);
