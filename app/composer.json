@@ -56,7 +56,8 @@
             "security-checker security:check": "script"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
         ],
         "post-update-cmd": [
             "@auto-scripts"
