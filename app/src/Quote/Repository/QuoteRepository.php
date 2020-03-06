@@ -50,7 +50,7 @@ final class QuoteRepository implements QuoteRepositoryInterface
         return (new UnicodeString($this->slugger->slug($author)->toString()))->trim()->lower()->toString();
     }
 
-    public function fetchAll(): ?array
+    public function fetchAll(): array
     {
         $quotesCollection = [];
         foreach ($this->dataSourceCollection->all() as $dataSource) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\HTTP\FormType;
 
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 
 trait FormErrorHandlerTrait
@@ -12,6 +13,10 @@ trait FormErrorHandlerTrait
     {
         $errors = [];
         foreach ($form->getErrors() as $error) {
+            if (!$error instanceof FormError) {
+                continue;
+            }
+
             $errors[] = $error->getMessage();
         }
         foreach ($form->all() as $childForm) {
