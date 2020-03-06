@@ -9,6 +9,10 @@
 Use [docker](https://docs.docker.com/install) to install the container services.
 
 ```bash
+cp .env.dist .env
+```
+
+```bash
 docker-compose up -d
 ```
 
