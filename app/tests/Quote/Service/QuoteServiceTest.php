@@ -16,7 +16,7 @@ final class QuoteServiceTest extends TestCase
 {
     private QuoteServiceInterface $service;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->service = new QuoteService(
