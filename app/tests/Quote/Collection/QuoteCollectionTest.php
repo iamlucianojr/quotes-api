@@ -15,8 +15,8 @@ final class QuoteCollectionTest extends TestCase
         $quoteCollection = QuoteCollection::fromArray([
             [
                 'author' => 'Ewa Sandlers',
-                'quote' => 'The answer for everything is 42'
-            ]
+                'quote' => 'The answer for everything is 42',
+            ],
         ]);
 
         $this->assertCount(1, $quoteCollection->items());

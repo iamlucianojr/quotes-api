@@ -61,5 +61,4 @@ final class ShoutControllerTest extends WebTestCase
         $this->assertArrayHasKey('title', $response);
         $this->assertArrayHasKey('errors', $response);
     }
-
 }

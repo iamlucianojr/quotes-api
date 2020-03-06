@@ -25,14 +25,13 @@ final class QuoteServiceTest extends TestCase
                     new DummyDataSource([
                         [
                             'author' => 'Steve Jobs',
-                            'quote' => 'Apple is the best'
+                            'quote' => 'Apple is the best',
                         ],
                         [
                             'author' => 'Steve Jobs',
-                            'quote' => 'Bell Labs is the best'
-                        ]
-
-                    ])
+                            'quote' => 'Bell Labs is the best',
+                        ],
+                    ]),
                 ]),
                 new AsciiSlugger()
             )

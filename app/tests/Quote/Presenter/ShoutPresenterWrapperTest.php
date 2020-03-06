@@ -44,7 +44,6 @@ final class ShoutPresenterWrapperTest extends TestCase
         $this->assertStringContainsStringIgnoringCase(trim(substr($text, 0, -1)), substr($formatter->getQuote(), 0, -1));
     }
 
-
     public function textCollectionDataProvider(): array
     {
         $rawData = file_get_contents(__DIR__ . '/../../resources/quotes.json');

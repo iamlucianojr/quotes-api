@@ -16,7 +16,7 @@ class QuoteTest extends TestCase
         $this->assertEquals('It is all about context', $quote->getQuote());
         $this->assertEquals([
             'author' => 'John Doe',
-            'quote' => 'It is all about context'
+            'quote' => 'It is all about context',
         ], $quote->toArray());
     }
 
@@ -27,7 +27,7 @@ class QuoteTest extends TestCase
         $this->assertEquals('It is all about context', $quote->getQuote());
         $this->assertEquals([
             'author' => 'John Doe',
-            'quote' => 'It is all about context'
+            'quote' => 'It is all about context',
         ], $quote->toArray());
     }
 }
