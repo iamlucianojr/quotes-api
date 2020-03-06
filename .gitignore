@@ -3,3 +3,4 @@ app/vendor
 var/
 app/var
 .env
+app/tests/coverage

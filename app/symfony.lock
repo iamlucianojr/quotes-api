@@ -310,5 +310,8 @@
     },
     "twig/twig": {
         "version": "v3.0.3"
+    },
+    "webmozart/assert": {
+        "version": "1.7.0"
     }
 }

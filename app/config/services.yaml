@@ -12,7 +12,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     _instanceof:
-        App\DataSource\DataSourceInterface:
+        App\Quote\DataSource\DataSourceInterface:
             tags: ['app.data_source']
 
     # makes classes in src/ available to be used as services
@@ -23,8 +23,8 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
+    App\UI\HTTP\Controller\:
+        resource: '../src/UI/HTTP/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
@@ -33,6 +33,15 @@ services:
     App\Collection\DataSourceCollection:
         arguments: [!tagged 'app.data_source']
 
-    App\DataSource\TextCollectionDataSource:
+    App\Quote\DataSource\SampleDataSource:
         arguments:
             $dataSourceUrl: 'https://raw.githubusercontent.com/iPresence/backend_test/master/quotes.json'
+
+    # example of how we could add new data sources to fetch quotes from
+    App\Quote\DataSource\QuotesRestDataSource:
+        arguments:
+            $dataSourceUrl: 'https://quotes.rest'
+
+    App\Quote\DataSource\DummyDataSource:
+        arguments:
+            $data: []

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Collection;
 
-abstract class AbstractCollection implements CollectionInterface
+abstract class AbstractCollection
 {
     protected iterable $items;
 
